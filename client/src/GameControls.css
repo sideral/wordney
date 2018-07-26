@@ -1,0 +1,22 @@
+.GameControls ul{
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.GameControls li{
+  width: 70px;
+  padding-top: 70px;
+  background-repeat: no-repeat;
+  background-size: 64px 64px;
+  margin: 0 40px;
+}
+
+.GameControls-retry{
+  background-image: url('/assets/retry.png');
+}
+
+.GameControls-shuffle{
+  background-image: url('/assets/shuffle.png');
+}

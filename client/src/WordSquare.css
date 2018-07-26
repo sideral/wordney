@@ -1,0 +1,23 @@
+.WordSquare{
+  position: relative;
+  margin: auto;
+  cursor: pointer;
+}
+
+.WordSquare-inline{
+  display: inline-block;
+}
+
+.WordSquare-word{
+  font-size: 2em;
+  display: inline-block;
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  text-align: center;
+}
+
+.WordSquare-inline .WordSquare-word{
+  font-size: 1.7em;
+  top: 14px;
+}
