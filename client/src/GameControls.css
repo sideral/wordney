@@ -7,10 +7,18 @@
 
 .GameControls li{
   width: 70px;
+  margin: 0 20px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.GameControls-button{
+  width: 100%;
+  text-align: center;
   padding-top: 70px;
   background-repeat: no-repeat;
   background-size: 64px 64px;
-  margin: 0 40px;
+  cursor: pointer;
 }
 
 .GameControls-retry{
@@ -19,4 +27,17 @@
 
 .GameControls-shuffle{
   background-image: url('/assets/shuffle.png');
+}
+
+.GameControls-left{
+  padding-top: 0;
+  cursor: default;
+}
+
+.GameControls-left div{
+  font-size: 3.4em;
+}
+
+.GameControls-left div.ending{
+  color: red;
 }

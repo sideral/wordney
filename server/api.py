@@ -28,7 +28,7 @@ class SimilarWords(Resource):
         result = [item[0] for item in similar]
         tagged = nltk.pos_tag(result)
         nouns = [tag[0] for tag in tagged if (tag[1] == "NN" or tag[1] == "NNS")]
-        return {'words': nouns[0:15]}
+        return {'words': nouns[0:20]}
 
 
 class WordArithmetic(Resource):

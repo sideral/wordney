@@ -12,16 +12,24 @@ class Game extends React.Component{
     super(props);
     this.state = {
       words: [],
-      similarWords: []
+      similarWords: [],
+      left: 25,
+      isDone: false
     };
   }
 
   componentDidMount(){
+    this.loadRandomWords();
+  }
+
+  loadRandomWords(){
     axios.get(this.props.url + '/random-words')
-      .then((response) => {
-        this.setState({words: response.data.words});
-        this.loadSimilarWords(response.data.words[0]);
-      })
+    .then((response) => {
+      this.setState({
+        words: response.data.words
+      });
+      this.loadSimilarWords(response.data.words[0]);
+    })
     .catch((error) => {
       console.error(error);
     });
@@ -42,22 +50,45 @@ class Game extends React.Component{
     words.splice(this.state.words.length - 1, 0, word);
 
     var isDone = word === this.state.words[this.state.words.length - 1];
+    var left = this.state.left - 1;
     this.setState({
       words: words,
       similarWords: [],
-      isDone: isDone
+      isDone: isDone,
+      left: left
     });
 
-    if(!isDone){
+    if(!isDone && left > 0){
       this.loadSimilarWords(word);
     }
+  }
+
+  onRetry(){
+    var words = [this.state.words[0], this.state.words[this.state.words.length - 1]];
+    this.setState({
+      words: words,
+      similarWords: [],
+      isDone: false,
+      left: 25
+    });
+    this.loadSimilarWords(words[0]);
+  }
+
+  onShuffle(){
+    this.setState({
+      words: [],
+      similarWords: [],
+      isDone: false,
+      left: 25
+    });
+    this.loadRandomWords();
   }
 
   render(){
     if(this.state.words.length === 0){
       return (
         <div>
-          <GameControls/>
+          <GameControls left={this.state.left} onRetry={this.onRetry.bind(this)} onShuffle={this.onShuffle.bind(this)}/>
           <LoadingSquare/>
         </div>
       )
@@ -79,7 +110,7 @@ class Game extends React.Component{
 
       return (
         <div>
-          <GameControls/>
+          <GameControls left={this.state.left} onRetry={this.onRetry.bind(this)} onShuffle={this.onShuffle.bind(this)}/>
           {steps}
           {wordList}
           {lastStep}
