@@ -1,12 +1,14 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
 from gensim.models import KeyedVectors
+from flask_cors import CORS
 import nltk
 import random
 
 app = Flask(__name__)
 api = Api(app)
-model = KeyedVectors.load(r"embeddings/vectors.300.kv")
+CORS(app)
+model = KeyedVectors.load(r"data/embeddings/vectors.300.kv")
 
 with open('data/nouns.txt', 'r') as file:
     nouns = [noun.replace('\n', '') for noun in file.readlines()]
@@ -21,6 +23,7 @@ class RandomWords(Resource):
 
 class SimilarWords(Resource):
     def get(self, word):
+        # Check if the word exists in vocabulary, return 404 if not
         similar = model.most_similar([word], topn=30)
         result = [item[0] for item in similar]
         tagged = nltk.pos_tag(result)
@@ -28,8 +31,17 @@ class SimilarWords(Resource):
         return {'words': nouns[0:15]}
 
 
+class WordArithmetic(Resource):
+    def get(self, word):
+        similar = model.most_similar(positive=[word, 'machine'], negative=['animal', 'number'], topn=1)
+        result = [item[0] for item in similar]
+        return {'words': result}
+
+
 api.add_resource(RandomWords, '/random-words')
 api.add_resource(SimilarWords, '/similar-words/<string:word>')
+api.add_resource(WordArithmetic, '/word-arithmetic/<string:word>')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

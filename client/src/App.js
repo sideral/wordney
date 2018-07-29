@@ -10,7 +10,7 @@ const App = () => (
   <BrowserRouter>
     <div className="App">
       <Route exact path="/" component={Start}/>
-      <Route path="/game" component={Game}/>
+      <Route path="/game" render={() => <Game url="http://localhost:5000"/>}/>
     </div>
   </BrowserRouter>
 );

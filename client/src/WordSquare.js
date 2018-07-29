@@ -12,16 +12,29 @@ class WordSquare extends React.Component{
       squareHeight: props.inline? 40 : 60,
       padding: 10,
       strokeWidth: 5
-    }
+    };
+    this.elRef = React.createRef();
   }
 
   componentDidMount(){
-    var wordEl = document.querySelector('.WordSquare-word-' + this.props.index);
+    this.updateBox();
+  }
+
+  updateBox(){
+    var wordEl = this.elRef.current;
     var textWidth = wordEl.getBoundingClientRect().width;
-    this.setState({
-      textWidth: textWidth,
-      squareWidth: textWidth + 4*this.state.padding + 2*this.state.strokeWidth
-    });
+    if(textWidth !== this.state.textWidth){
+      this.setState({
+        textWidth: textWidth,
+        squareWidth: textWidth + 4*this.state.padding + 2*this.state.strokeWidth
+      });
+    }
+  }
+
+  onClick(){
+    if(this.props.onClick){
+      this.props.onClick(this.props.children);
+    }
   }
 
   render(){
@@ -47,10 +60,10 @@ class WordSquare extends React.Component{
     }
 
     return (
-      <div className={"WordSquare " + (this.props.inline? "WordSquare-inline" : "")} style={{width: this.state.squareWidth}}>
+      <div className={"WordSquare " + (this.props.inline? " WordSquare-inline": "")} style={{width: this.state.squareWidth}}>
         {rectangle}
-        <div className={"WordSquare-word WordSquare-word-" + this.props.index}>
-          {this.props.word}
+        <div className="WordSquare-word" ref={this.elRef} onClick={this.onClick.bind(this)}>
+          {this.props.children}
         </div>
       </div>
     );

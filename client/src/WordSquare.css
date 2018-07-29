@@ -1,10 +1,17 @@
+.WordChoices{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.WordChoices li{
+  display: inline-block;
+}
+
 .WordSquare{
   position: relative;
   margin: auto;
   cursor: pointer;
-}
-
-.WordSquare-inline{
   display: inline-block;
 }
 
@@ -15,9 +22,42 @@
   top: 20px;
   left: 25px;
   text-align: center;
+  white-space: nowrap;
 }
 
 .WordSquare-inline .WordSquare-word{
   font-size: 1.7em;
   top: 14px;
+}
+
+.WordSquare-loading{
+  margin-top: 4px;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/loading.png') no-repeat;
+  background-size: 100%;
+  animation: spin 1.5s linear infinite;
+}
+
+.WordStep{
+  display: inline-block;
+}
+
+.WordStep-arrow{
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/arrow.png') no-repeat;
+  background-size: 100%;
+  vertical-align: top;
+  margin-top: 25px;
+}
+
+.WordStep-last{
+  display: block;
+}
+
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(360deg);}
 }

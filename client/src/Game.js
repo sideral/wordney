@@ -1,29 +1,92 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import WordStep from './WordStep';
-import WordChoice from './WordChoice';
-import GameControls from './GameControls';
+import axios from 'axios';
 
-const Game = () => (
-  <div>
-    <GameControls/>
-    <WordStep word={"information"} index={15}/>
-    <WordChoice word={"data"} index={0}/>
-    <WordChoice word={"knowledge"} index={1}/>
-    <WordChoice word={"provide"} index={2}/>
-    <WordChoice word={"documents"} index={3}/>
-    <WordChoice word={"access"} index={4}/>
-    <WordChoice word={"intelligence"} index={5}/>
-    <WordChoice word={"details"} index={6}/>
-    <WordChoice word={"reports"} index={7}/>
-    <WordChoice word={"database"} index={8}/>
-    <WordChoice word={"internet"} index={9}/>
-    <WordChoice word={"technology"} index={10}/>
-    <WordChoice word={"evidence"} index={11}/>
-    <WordChoice word={"source"} index={12}/>
-    <WordChoice word={"communication"} index={13}/>
-    <WordChoice word={"communications"} index={14}/>
-  </div>
-);
+import WordStep from './WordStep';
+import WordLastStep from './WordLastStep';
+import WordChoiceList from './WordChoiceList';
+import GameControls from './GameControls';
+import LoadingSquare from './LoadingSquare';
+
+class Game extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      words: [],
+      similarWords: []
+    };
+  }
+
+  componentDidMount(){
+    axios.get(this.props.url + '/random-words')
+      .then((response) => {
+        this.setState({words: response.data.words});
+        this.loadSimilarWords(response.data.words[0]);
+      })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+  loadSimilarWords(word){
+    axios.get(`${this.props.url}/similar-words/${word}`)
+    .then((response) => {
+      this.setState({ similarWords: response.data.words });
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+  }
+
+  onWordSelect(word){
+    var words = this.state.words;
+    words.splice(this.state.words.length - 1, 0, word);
+
+    var isDone = word === this.state.words[this.state.words.length - 1];
+    this.setState({
+      words: words,
+      similarWords: [],
+      isDone: isDone
+    });
+
+    if(!isDone){
+      this.loadSimilarWords(word);
+    }
+  }
+
+  render(){
+    if(this.state.words.length === 0){
+      return (
+        <div>
+          <GameControls/>
+          <LoadingSquare/>
+        </div>
+      )
+    }
+    else{
+      let steps = [];
+      this.state.words.forEach((word, idx) => {
+        if(idx < this.state.words.length - 1){
+          steps.push(<WordStep key={idx}>{word}</WordStep>);
+        }
+      });
+
+      let lastStep = this.state.isDone? null : <WordLastStep>{this.state.words[this.state.words.length - 1]}</WordLastStep>;
+
+      let wordList;
+      if(!this.state.isDone){
+        wordList = <WordChoiceList words={this.state.similarWords} onSelect={this.onWordSelect.bind(this)}/>;
+      }
+
+      return (
+        <div>
+          <GameControls/>
+          {steps}
+          {wordList}
+          {lastStep}
+        </div>
+      )
+    }
+  }
+}
 
 export default Game;
