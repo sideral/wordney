@@ -13,10 +13,6 @@ class WordChoiceList extends React.Component{
   }
 
   render(){
-    if(this.props.words.length === 0){
-      return <LoadingSquare/>;
-    }
-
     let choices = [];
     this.props.words.forEach((word, index) => {
       choices.push(<li key={index}><WordChoice onClick={this.onSelect.bind(this)}>{word}</WordChoice></li>);

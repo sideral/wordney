@@ -2,13 +2,12 @@ import React from 'react';
 import axios from 'axios';
 
 import WordStep from './WordStep';
-import WordLastStep from './WordLastStep';
 import WordChoiceList from './WordChoiceList';
 import GameControls from './GameControls';
 import LoadingSquare from './LoadingSquare';
 
-class Game extends React.Component{
-  constructor(props){
+class Game extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       words: [],
@@ -18,11 +17,11 @@ class Game extends React.Component{
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.loadRandomWords();
   }
 
-  loadRandomWords(){
+  loadRandomWords() {
     axios.get(this.props.url + '/random-words')
     .then((response) => {
       this.setState({
@@ -35,17 +34,17 @@ class Game extends React.Component{
     });
   }
 
-  loadSimilarWords(word){
+  loadSimilarWords(word) {
     axios.get(`${this.props.url}/similar-words/${word}`)
     .then((response) => {
       this.setState({ similarWords: response.data.words });
     })
     .catch((error) => {
       console.error(error);
-    })
+    });
   }
 
-  onWordSelect(word){
+  onWordSelect(word) {
     var words = this.state.words;
     words.splice(this.state.words.length - 1, 0, word);
 
@@ -58,12 +57,12 @@ class Game extends React.Component{
       left: left
     });
 
-    if(!isDone && left > 0){
+    if (!isDone && left > 0) {
       this.loadSimilarWords(word);
     }
   }
 
-  onRetry(){
+  onRetry() {
     var words = [this.state.words[0], this.state.words[this.state.words.length - 1]];
     this.setState({
       words: words,
@@ -74,7 +73,7 @@ class Game extends React.Component{
     this.loadSimilarWords(words[0]);
   }
 
-  onShuffle(){
+  onShuffle() {
     this.setState({
       words: [],
       similarWords: [],
@@ -84,27 +83,28 @@ class Game extends React.Component{
     this.loadRandomWords();
   }
 
-  render(){
-    if(this.state.words.length === 0){
+  render() {
+    if (this.state.words.length === 0) {
       return (
         <div>
           <GameControls left={this.state.left} onRetry={this.onRetry.bind(this)} onShuffle={this.onShuffle.bind(this)}/>
           <LoadingSquare/>
         </div>
-      )
+      );
     }
-    else{
+    else {
       let steps = [];
       this.state.words.forEach((word, idx) => {
-        if(idx < this.state.words.length - 1){
-          steps.push(<WordStep key={idx}>{word}</WordStep>);
+        if (idx < this.state.words.length - 1) {
+          steps.push(<WordStep key={word}>{word}</WordStep>);
         }
       });
 
-      let lastStep = this.state.isDone? null : <WordLastStep>{this.state.words[this.state.words.length - 1]}</WordLastStep>;
-
       let wordList;
-      if(!this.state.isDone){
+      if (!this.state.isDone) {
+        steps.push(<LoadingSquare/>);
+        var lastWord = this.state.words[this.state.words.length - 1];
+        steps.push(<WordStep key={lastWord} isLast={true} color="gray">{lastWord}</WordStep>);
         wordList = <WordChoiceList words={this.state.similarWords} onSelect={this.onWordSelect.bind(this)}/>;
       }
 
@@ -113,9 +113,8 @@ class Game extends React.Component{
           <GameControls left={this.state.left} onRetry={this.onRetry.bind(this)} onShuffle={this.onShuffle.bind(this)}/>
           {steps}
           {wordList}
-          {lastStep}
         </div>
-      )
+      );
     }
   }
 }

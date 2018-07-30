@@ -15,11 +15,15 @@
   display: inline-block;
 }
 
+.WordSquare:hover{
+  color: purple;
+}
+
 .WordSquare-word{
   font-size: 2em;
   display: inline-block;
   position: absolute;
-  top: 20px;
+  top: 16px;
   left: 25px;
   text-align: center;
   white-space: nowrap;
@@ -50,11 +54,11 @@
   background: url('/assets/arrow.png') no-repeat;
   background-size: 100%;
   vertical-align: top;
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
 .WordStep-last{
-  display: block;
+
 }
 
 @keyframes spin {

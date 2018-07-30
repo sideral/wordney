@@ -9,7 +9,7 @@ class WordSquare extends React.Component{
     this.state = {
       textWidth: 0,
       squareWidth: 0,
-      squareHeight: props.inline? 40 : 60,
+      squareHeight: props.inline? 40 : 50,
       padding: 10,
       strokeWidth: 5
     };
