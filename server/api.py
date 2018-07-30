@@ -24,13 +24,13 @@ class RandomWords(Resource):
 class SimilarWords(Resource):
     def get(self, word):
         # Check if the word exists in vocabulary, return 404 if not
-        similar = model.most_similar([word], topn=70)
+        similar = model.most_similar([word], topn=50)
         result = [item[0] for item in similar]
         tagged = nltk.pos_tag(result)
         nouns = [tag[0] for tag in tagged if (tag[1] == "NN" or tag[1] == "NNS")]
-        common = ["things", "way", "something", "everything", "nothing", "anything", "thing", "anyone", "tell"]
+        common = ["things", "something", "everything", "nothing", "anything", "thing", "anyone"]
         less_common = [noun for noun in nouns if noun not in common]
-        return {'words': less_common[0:30]}
+        return {'words': less_common[0:40]}
 
 
 class WordArithmetic(Resource):

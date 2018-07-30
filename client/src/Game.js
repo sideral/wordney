@@ -83,36 +83,75 @@ class Game extends React.Component {
     this.loadRandomWords();
   }
 
+  backToWord(word) {
+    let newWords = [];
+    for (let currentWord of this.state.words) {
+      newWords.push(currentWord);
+      if (currentWord === word) {
+        break;
+      }
+    }
+
+    newWords.push(this.state.words[this.state.words.length - 1]);
+
+    this.setState({
+      words: newWords,
+      similarWords: [],
+      isDone: false
+    });
+    this.loadSimilarWords(word);
+  }
+
   render() {
+    const gameControls = <GameControls left={this.state.left} onRetry={this.onRetry.bind(this)}
+                                       onShuffle={this.onShuffle.bind(this)}/>;
+
     if (this.state.words.length === 0) {
       return (
         <div>
-          <GameControls left={this.state.left} onRetry={this.onRetry.bind(this)} onShuffle={this.onShuffle.bind(this)}/>
+          {gameControls}
           <LoadingSquare/>
+        </div>
+      );
+    }
+    else if (!this.state.isDone) {
+      let steps = [];
+      this.state.words.forEach((word, idx) => {
+        if (idx < this.state.words.length - 1) {
+          steps.push(<WordStep key={word + idx} onClick={this.backToWord.bind(this)}>{word}</WordStep>);
+        }
+      });
+
+      steps.push(<LoadingSquare key={'?'}/>);
+      var lastWord = this.state.words[this.state.words.length - 1];
+      steps.push(<WordStep key={lastWord + '-last'} isLast={true} color="gray">{lastWord}</WordStep>);
+
+      return (
+        <div>
+          {gameControls}
+          {steps}
+          <WordChoiceList words={this.state.similarWords} onSelect={this.onWordSelect.bind(this)}/>
         </div>
       );
     }
     else {
       let steps = [];
-      this.state.words.forEach((word, idx) => {
-        if (idx < this.state.words.length - 1) {
-          steps.push(<WordStep key={word}>{word}</WordStep>);
-        }
-      });
 
-      let wordList;
-      if (!this.state.isDone) {
-        steps.push(<LoadingSquare/>);
-        var lastWord = this.state.words[this.state.words.length - 1];
-        steps.push(<WordStep key={lastWord} isLast={true} color="gray">{lastWord}</WordStep>);
-        wordList = <WordChoiceList words={this.state.similarWords} onSelect={this.onWordSelect.bind(this)}/>;
-      }
+      this.state.words.forEach((word, idx) => {
+        if (idx === this.state.words.length - 1) {
+          return;
+        }
+
+        steps.push(<WordStep
+          key={word}
+          isDone={true}
+          isLast={idx === this.state.words.length - 2}>{word}</WordStep>);
+      });
 
       return (
         <div>
-          <GameControls left={this.state.left} onRetry={this.onRetry.bind(this)} onShuffle={this.onShuffle.bind(this)}/>
+          {gameControls}
           {steps}
-          {wordList}
         </div>
       );
     }
