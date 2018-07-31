@@ -1,6 +1,5 @@
 import React from 'react';
 import WordChoice from './WordChoice';
-import LoadingSquare from './LoadingSquare';
 
 class WordChoiceList extends React.Component{
   static defaultProps = {

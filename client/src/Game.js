@@ -4,7 +4,8 @@ import axios from 'axios';
 import WordStep from './WordStep';
 import WordChoiceList from './WordChoiceList';
 import GameControls from './GameControls';
-import LoadingSquare from './LoadingSquare';
+import WordIncognitoStep from './WordIncognitoStep';
+import MagnificentMessage from './MagnificentMessage';
 
 class Game extends React.Component {
   constructor(props) {
@@ -110,7 +111,7 @@ class Game extends React.Component {
       return (
         <div>
           {gameControls}
-          <LoadingSquare/>
+          <WordIncognitoStep/>
         </div>
       );
     }
@@ -122,7 +123,7 @@ class Game extends React.Component {
         }
       });
 
-      steps.push(<LoadingSquare key={'?'}/>);
+      steps.push(<WordIncognitoStep key={'?'} ready={this.state.similarWords.length > 0} />);
       var lastWord = this.state.words[this.state.words.length - 1];
       steps.push(<WordStep key={lastWord + '-last'} isLast={true} color="gray">{lastWord}</WordStep>);
 
@@ -152,6 +153,7 @@ class Game extends React.Component {
         <div>
           {gameControls}
           {steps}
+          <MagnificentMessage usedWords={this.state.words.length - 1}/>
         </div>
       );
     }

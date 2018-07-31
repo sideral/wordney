@@ -19,6 +19,10 @@
   color: purple;
 }
 
+.WordSquare.WordStep-done:hover{
+  color: black;
+}
+
 .WordSquare-word{
   font-size: 2em;
   display: inline-block;
@@ -43,6 +47,11 @@
   animation: spin 1.5s linear infinite;
 }
 
+.WordSquare-question{
+  animation: fade 0.5s infinite linear alternate;
+  margin-left: 2px;
+}
+
 .WordStep{
   display: inline-block;
 }
@@ -57,11 +66,13 @@
   margin-top: 20px;
 }
 
-.WordStep-last{
-
-}
 
 @keyframes spin {
   from {transform:rotate(0deg);}
   to {transform:rotate(360deg);}
+}
+
+@keyframes fade {
+  from {opacity: 1;}
+  to {opacity: 0;}
 }

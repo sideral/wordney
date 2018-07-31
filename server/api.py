@@ -35,7 +35,7 @@ class SimilarWords(Resource):
 
 class WordArithmetic(Resource):
     def get(self, word):
-        similar = model.most_similar(positive=[word, 'machine'], negative=['animal', 'number'], topn=1)
+        similar = model.most_similar(positive=[word], negative=['band'], topn=20)
         result = [item[0] for item in similar]
         return {'words': result}
 
