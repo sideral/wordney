@@ -51,7 +51,7 @@ class MagnificentMessage extends React.Component{
       'gratifying'
     ];
 
-    const randomIndex = Math.floor(results.length*Math.random());
+    const randomIndex = Math.floor(results.length * Math.random());
     return (
       <div>
         <div className="MagnificentMessage">{results[randomIndex]}!!</div>

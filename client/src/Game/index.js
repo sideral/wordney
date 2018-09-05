@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import WordStep from './WordStep';
 import WordChoiceList from './WordChoiceList';
@@ -7,14 +6,15 @@ import GameControls from './GameControls';
 import WordIncognitoStep from './WordIncognitoStep';
 import MagnificentMessage from './MagnificentMessage';
 
-class Game extends React.Component {
+export default class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       words: [],
       similarWords: [],
-      left: 25,
-      isDone: false
+      left: 5,
+      isDone: false,
+      status: 'loading'
     };
   }
 
@@ -23,12 +23,12 @@ class Game extends React.Component {
   }
 
   loadRandomWords() {
-    axios.get(this.props.url + '/random-words')
+    fetch(this.props.url + '/random-words')
     .then((response) => {
       this.setState({
-        words: response.data.words
+        words: response.json().words
       });
-      this.loadSimilarWords(response.data.words[0]);
+      this.loadSimilarWords(response.json().words[0]);
     })
     .catch((error) => {
       console.error(error);
@@ -36,7 +36,7 @@ class Game extends React.Component {
   }
 
   loadSimilarWords(word) {
-    axios.get(`${this.props.url}/similar-words/${word}`)
+    fetch(`${this.props.url}/similar-words/${word}`)
     .then((response) => {
       this.setState({ similarWords: response.data.words });
     })
@@ -104,8 +104,11 @@ class Game extends React.Component {
   }
 
   render() {
-    const gameControls = <GameControls left={this.state.left} onRetry={this.onRetry.bind(this)}
-                                       onShuffle={this.onShuffle.bind(this)}/>;
+    const gameControls = <GameControls
+      left={this.state.left}
+      onRetry={this.onRetry.bind(this)}
+      onShuffle={this.onShuffle.bind(this)}
+    />;
 
     if (this.state.words.length === 0) {
       return (
@@ -159,5 +162,3 @@ class Game extends React.Component {
     }
   }
 }
-
-export default Game;

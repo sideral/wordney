@@ -1,0 +1,24 @@
+.Start-header {
+  height: 150px;
+  color: #033c37;
+}
+
+.Start-title {
+  font-size: 4.5em;
+  margin-bottom: 0;
+}
+
+.Start-subtitle {
+  font-size: 1.2em;
+  margin: 10px 14% 0 15%;
+}
+
+.Start-button{
+  margin-top: 40px;
+  color: #ff5600;
+  font-family: 'Pangolin', cursive;
+  font-size: 2.5em;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+}

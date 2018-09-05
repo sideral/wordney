@@ -1,10 +1,10 @@
 import React from 'react';
-import ControlButtonChange from './ControlButtonChange';
-import ControlButtonLeft from './ControlButtonLeft';
-import ControlButtonRetry from './ControlButtonRetry';
-import './GameControls.css';
+import ControlButtonChange from './components/ControlButtonChange';
+import ControlButtonLeft from './components/ControlButtonLeft';
+import ControlButtonRetry from './components/ControlButtonRetry';
+import './index.css';
 
-class GameControls extends React.Component{
+export default class Index extends React.Component{
   render(){
     return (
       <nav className="GameControls">
@@ -17,5 +17,3 @@ class GameControls extends React.Component{
     );
   }
 }
-
-export default GameControls;

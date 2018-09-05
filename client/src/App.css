@@ -1,39 +1,10 @@
-body{
-  background-color: #ffdc2e;
-}
-
 .App {
   text-align: center;
-  font-family: 'Pangolin', cursive;
   padding: 0 20px;
   max-width: 1024px;
   margin: auto;
 }
 
-.Start-header {
-  height: 150px;
-  color: #033c37;
-}
-
-.Start-title {
-  font-size: 4.5em;
-  margin-bottom: 0;
-}
-
-.Start-subtitle {
-  font-size: 1.2em;
-  margin: 10px 14% 0 15%;
-}
-
-.Start-button{
-  margin-top: 40px;
-  color: #ff5600;
-  font-family: 'Pangolin', cursive;
-  font-size: 2.5em;
-  text-align: center;
-  display: inline-block;
-  text-decoration: none;
-}
 
 .MagnificentMessage{
   text-align: center;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Start = () => (
+const Index = () => (
   <div>
     <header className="Start-header">
       <h1 className="Start-title">wordney</h1>
@@ -13,4 +13,4 @@ const Start = () => (
   </div>
 );
 
-export default Start;
+export default Index;
