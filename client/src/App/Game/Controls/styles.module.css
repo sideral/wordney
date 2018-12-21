@@ -1,18 +1,18 @@
-.GameControls ul{
+.game-controls ul {
   list-style-type: none;
   display: flex;
   justify-content: center;
   padding: 0;
 }
 
-.GameControls li{
+.game-controls li {
   width: 70px;
   margin: 0 20px;
   flex-grow: 0;
   flex-shrink: 0;
 }
 
-.GameControls-button{
+.game-controls-button {
   width: 100%;
   text-align: center;
   padding-top: 70px;
@@ -21,23 +21,26 @@
   cursor: pointer;
 }
 
-.GameControls-retry{
+.game-controls-retry {
+  composes: game-controls-button;
   background-image: url('/assets/retry.png');
 }
 
-.GameControls-shuffle{
+.game-controls-shuffle {
+  composes: game-controls-button;
   background-image: url('/assets/shuffle.png');
 }
 
-.GameControls-left{
+.game-controls-left {
+  composes: game-controls-button;
   padding-top: 0;
   cursor: default;
 }
 
-.GameControls-left div{
+.game-controls-left div {
   font-size: 3.4em;
 }
 
-.GameControls-left div.ending{
+.game-controls-left-ending {
   color: red;
 }

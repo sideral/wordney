@@ -1,0 +1,10 @@
+
+.word-choices{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.word-choices li{
+  display: inline-block;
+}

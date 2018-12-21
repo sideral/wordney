@@ -30,7 +30,7 @@ class SimilarWords(Resource):
         nouns = [tag[0] for tag in tagged if (tag[1] == "NN" or tag[1] == "NNS")]
         common = ["things", "something", "everything", "nothing", "anything", "thing", "anyone"]
         less_common = [noun for noun in nouns if noun not in common]
-        return {'words': less_common[0:40]}
+        return {'words': less_common[0:25]}
 
 
 class WordArithmetic(Resource):

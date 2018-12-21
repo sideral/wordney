@@ -1,0 +1,32 @@
+.word-square{
+  position: relative;
+  margin: auto;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.word-square:hover{
+  transform: scale(1.15);
+  color: purple;
+}
+
+.word-square.word-step-done:hover{
+  color: black;
+}
+
+.word-square-word{
+  font-size: 2em;
+  display: inline-block;
+  position: absolute;
+  top: 16px;
+  left: 25px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.word-square-word-inline{
+  composes: word-square-word;
+  font-size: 1.7em;
+  top: 14px;
+}

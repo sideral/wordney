@@ -1,0 +1,16 @@
+
+.MagnificentMessage{
+  text-align: center;
+  font-size: 4em;
+  color: #033c37;
+  margin-top: 25px;
+}
+
+.MagnificentMessage-count{
+  font-size: 1.3em;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

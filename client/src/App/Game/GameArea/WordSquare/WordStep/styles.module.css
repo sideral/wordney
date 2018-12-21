@@ -1,0 +1,14 @@
+
+.word-step{
+  display: inline-block;
+}
+
+.word-step-arrow{
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: url('/assets/arrow.png') no-repeat;
+  background-size: 100%;
+  vertical-align: top;
+  margin-top: 20px;
+}
