@@ -1,8 +1,8 @@
 import config from 'config';
 
 export default class Api {
-  static fetchRandomWords() {
-    return fetch(`${config.apiUrl}/random-words`)
+  static fetchWordPair(degrees) {
+    return fetch(`${config.apiUrl}/word-pair/${degrees}`)
             .then((response) => response.json())
             .then((data) => data.words)
             .catch(console.error);

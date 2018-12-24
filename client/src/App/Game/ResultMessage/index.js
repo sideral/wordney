@@ -48,7 +48,25 @@ class MagnificentMessage extends React.Component{
       'glorious',
       'heroic',
       'splendid',
-      'gratifying'
+      'gratifying',
+      'bravo',
+      'wow',
+      'fuck yeah',
+      'supreme',
+      'incomparable',
+      'transcendent',
+      'perfect',
+      'unrivalled',
+      'supernatural',
+      'legendary',
+      'fabulous',
+      'unreal',
+      'A+',
+      'super',
+      'palatial',
+      'grandiose',
+      'bombastic',
+      'ecstatic'
     ];
 
     const randomIndex = Math.floor(results.length * Math.random());

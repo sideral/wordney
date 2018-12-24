@@ -6,52 +6,83 @@ import RelatedWords from './RelatedWords';
 export default class GameArea extends React.Component {
   state = {
     ready: false,
-    fetched: false
+    words: [],
+    currentWord: ''
   };
 
-  constructor(props) {
-    super(props);
-    this.onWordSelected = this.onWordSelected.bind(this);
-    this.onWordsFetched = this.onWordsFetched.bind(this);
+  componentDidMount() {
+    this.fetchWords();
   }
 
-  componentDidMount() {
-    Api.fetchRandomWords().then((words) => {
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.status === 'new' && prevProps.status !== 'new'){
+      this.setState({
+        words: [],
+        currentWord: '',
+        ready: false
+      });
+      this.fetchWords();
+    }
+    else if(this.props.status === 'refreshing' && prevProps.status !== 'refreshing'){
+      prevState.words.splice(1, prevState.words.length -2);
+      this.setState({
+        words: prevState.words,
+        currentWord: prevState.words[0],
+        ready: false
+      });
+      this.fetchWords();
+    }
+  }
+
+  fetchWords() {
+    Api.fetchWordPair(this.props.degrees).then((words) => {
       this.setState({
         words: words,
-        currentWord: words[0],
-        ready: true
+        currentWord: words[0]
       });
     });
   }
 
-  onWordsFetched(){
+  makeReady = () => {
     this.setState({
-      fetched: true
+      ready: true
     });
-  }
+    this.props.onReady();
+  };
 
-  onWordSelected(word) {
-    this.state.words.splice(-1, 0, word);
-    this.setState({
-      words: this.state.words,
-      currentWord: word,
-      fetched: false
+  attemptWord = (word) => {
+    this.setState((prevState) => {
+      prevState.words.splice(-1, 0, word);
+      return {
+        words: prevState.words,
+        currentWord: word
+      }
     });
     this.props.onAttempt();
-  }
+  };
+
+  backToWord = (word) => {
+    this.setState((prevState) => {
+      const index = prevState.words.indexOf(word);
+      prevState.words.splice(index + 1, prevState.words.length - index - 2 );
+      return {
+        words: prevState.words,
+        currentWord: prevState.words[prevState.words.length - 2]
+      }
+    });
+  };
 
   render() {
-    const { ready, words, currentWord, fetched } = this.state;
+    const { ready, words, currentWord } = this.state;
 
-    if (!ready) {
+    if (words.length === 0) {
       return null;
     }
 
     return (
       <div>
-        <Breadcrumb words={words} ready={fetched}/>
-        <RelatedWords word={currentWord} onSelect={this.onWordSelected} onFetch={this.onWordsFetched}/>
+        <Breadcrumb words={words} onWordClick={this.backToWord} ready={ready}/>
+        <RelatedWords word={currentWord} onSelect={this.attemptWord} onFetch={this.makeReady}/>
       </div>
     );
   }

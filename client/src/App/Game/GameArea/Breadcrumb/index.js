@@ -4,40 +4,24 @@ import WordIncognitoStep from './WordIncognitoStep';
 
 class Breadcrumb extends React.Component {
   static defaultProps = {
-    ready: false
+    ready: false,
+    words: []
   };
 
-  backToWord(word) {
-    let newWords = [];
-    for (let currentWord of this.state.words) {
-      newWords.push(currentWord);
-      if (currentWord === word) {
-        break;
-      }
-    }
-
-    newWords.push(this.state.words[this.state.words.length - 1]);
-
-    this.setState({
-      words: newWords,
-      similarWords: [],
-      isDone: false
-    });
-    //this.loadSimilarWords(word);
-  }
-
   render() {
-    const steps = this.props.words.slice(0, -1).map((word, idx) => {
+    const { words, ready, onWordClick } = this.props;
+
+    const steps = words.slice(0, -1).map((word, idx) => {
       return (
-        <WordStep key={`${word}-${idx}`}>
+        <WordStep key={`${word}-${idx}`} onClick={() => onWordClick(word)}>
           {word}
         </WordStep>
       );
     });
 
-    steps.push(<WordIncognitoStep key='?' ready={this.props.ready}/>);
+    steps.push(<WordIncognitoStep key='?' ready={ready}/>);
 
-    const last = this.props.words.slice(-1)[0];
+    const last = words.slice(-1)[0];
     steps.push(
       <WordStep key={`${last}-last`} isLast={true} color="gray">
         {last}

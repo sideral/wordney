@@ -6,95 +6,72 @@ export default class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      playing: true,
-      result: 'pending', //'lost', 'won',
-      attemptsLeft: 6
+      status: 'new', //'playing', 'lost', 'won',
+      attemptsLeft: 20,
+      degrees: 5
     };
   }
 
   onRetry = () => {
-    var words = [this.state.words[0], this.state.words[this.state.words.length - 1]];
     this.setState({
-      words: words,
-      similarWords: [],
-      isDone: false,
-      left: 25
+      status: 'refreshing',
+      attemptsLeft: 20
     });
-    //this.loadSimilarWords(words[0]);
   };
 
   onShuffle = () => {
     this.setState({
-      words: [],
-      similarWords: [],
-      isDone: false,
-      left: 25
+      status: 'new',
+      attemptsLeft: 20
     });
   };
 
   onAttempt = () => {
-    var left = this.state.attemptsLeft - 1;
+    this.setState((prevState) => {
+      var left = prevState.attemptsLeft - 1;
+      return {
+        attemptsLeft: left,
+        status: left === 0? 'lost' : 'playing',
+        playing: left > 0
+      }
+    });
+  };
+
+  onReady = () => {
     this.setState({
-      attemptsLeft: left,
-      result: left === 0? 'lost' : 'pending',
-      playing: left > 0
+      status: 'playing'
     });
   };
 
   render() {
-    if(!this.state.playing){
+    const {status, attemptsLeft, degrees} = this.state;
+
+    if(['new', 'playing', 'refreshing'].includes(status)){
       return (
         <section>
-          <Controls attempts={this.state.attemptsLeft} onShuffle={this.onShuffle} onRetry={this.onRetry}/>
+          <Controls
+            attempts={attemptsLeft}
+            onShuffle={this.onShuffle}
+            onRetry={this.onRetry}
+          />
+          <GameArea
+            degrees={degrees}
+            status={status}
+            onAttempt={this.onAttempt}
+            onReady={this.onReady}
+          />
         </section>
       );
     }
 
     return (
       <section>
-        <Controls attempts={this.state.attemptsLeft} onShuffle={this.onShuffle} onRetry={this.onRetry}/>
-        <GameArea result={this.state.result} onAttempt={this.onAttempt}/>
+        <Controls
+          attempts={attemptsLeft}
+          onShuffle={this.onShuffle}
+          onRetry={this.onRetry}
+        />
       </section>
     );
-
-    // const gameControls = <GameControls
-    //   left={this.state.left}
-    //   onRetry={this.onRetry.bind(this)}
-    //   onShuffle={this.onShuffle.bind(this)}
-    // />;
-    //
-    // if (this.state.words.length === 0) {
-    //   return (
-    //     <div>
-    //       {gameControls}
-    //       <WordIncognitoStep/>
-    //     </div>
-    //   );
-    // }
-    // else if (!this.state.isDone) {
-
-    // }
-    // else {
-    //   let steps = [];
-    //
-    //   this.state.words.forEach((word, idx) => {
-    //     if (idx === this.state.words.length - 1) {
-    //       return;
-    //     }
-    //
-    //     steps.push(<WordStep
-    //       key={word}
-    //       isDone={true}
-    //       isLast={idx === this.state.words.length - 2}>{word}</WordStep>);
-    //   });
-    //
-    //   return (
-    //     <div>
-    //       {gameControls}
-    //       {steps}
-    //       <MagnificentMessage usedWords={this.state.words.length - 1}/>
-    //     </div>
-    //   );
-    // }
   }
 }
