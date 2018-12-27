@@ -1,18 +1,20 @@
 import React from 'react';
 import WordStep from '../../components/WordSquare/WordStep';
 import WordIncognitoStep from './WordIncognitoStep';
+import styles from './styles.module.css';
 
 class WordTrail extends React.Component {
   static defaultProps = {
     loading: true,
+    result: 'pending',
     words: []
   };
 
   render() {
-    const { words, loading, onWordClick } = this.props;
+    const { words, loading, onWordClick, result } = this.props;
 
     if(words.length === 0){
-      return <WordIncognitoStep key='?' loading={loading}/>;
+      return <div className={styles['word-trail']}><WordIncognitoStep key='?' loading={loading}/></div>;
     }
 
     const steps = words.slice(0, -1).map((word, idx) => {
@@ -23,17 +25,18 @@ class WordTrail extends React.Component {
       );
     });
 
-    steps.push(<WordIncognitoStep key='?' loading={loading}/>);
-
-    const last = words.slice(-1)[0];
-    steps.push(
-      <WordStep key={`${last}-last`} isLast={true} color="gray">
-        {last}
-      </WordStep>
-    );
+    if(result !== 'won'){
+      steps.push(<WordIncognitoStep key='?' loading={loading}/>);
+      const last = words.slice(-1)[0];
+      steps.push(
+        <WordStep key={`${last}-last`} isLast={true} color="gray">
+          {last}
+        </WordStep>
+      );
+    }
 
     return (
-      <div>{steps}</div>
+      <div className={styles['word-trail']}>{steps}</div>
     );
   }
 }

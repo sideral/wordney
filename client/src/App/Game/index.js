@@ -4,13 +4,16 @@ import Api from './services/api';
 import Controls from './regions/Controls';
 import RelatedWords from './regions/RelatedWords';
 import WordTrail from './regions/WordTrail';
+import ResultMessage from './regions/ResultMessage'
+
+const MAX_ATTEMPTS = 20;
 
 export default class Game extends React.Component {
   static getInitialState() {
     return {
-      attemptsLeft: 20,
-      degrees: 2,
-      result: null,
+      attemptsLeft: MAX_ATTEMPTS,
+      degrees: 5,
+      result: 'pending',
       wordTrail: [],
       currentWordIndex: null,
       relatedWords: []
@@ -58,10 +61,20 @@ export default class Game extends React.Component {
 
   addToTrail = (word) => {
     this.setState(prevState => {
+      let result = 'pending';
+      const attemptsLeft = prevState.attemptsLeft - 1;
+      if(attemptsLeft === 0){
+        result = 'lost';
+      }
+      else if(word === prevState.wordTrail[prevState.wordTrail.length - 1]){
+        result = 'won';
+      }
+
       return {
         wordTrail: update(prevState.wordTrail, {$splice: [[-1, 0, word]]}),
         currentWordIndex: prevState.currentWordIndex + 1,
-        attemptsLeft: prevState.attemptsLeft - 1
+        attemptsLeft: attemptsLeft,
+        result: result
       }
     }, this.fetchRelatedWords);
   };
@@ -85,13 +98,31 @@ export default class Game extends React.Component {
   }
 
   render() {
-    const {attemptsLeft, wordTrail, relatedWords} = this.state;
+    const {result, attemptsLeft, wordTrail, relatedWords} = this.state;
     const currentWord = this.getCurrentWord();
+
+    let body = null;
+    if(result === 'pending'){
+      body = (
+        <div>
+          <WordTrail words={wordTrail} loading={!relatedWords.length} onWordClick={this.backToWord}/>
+          <RelatedWords words={relatedWords} currentWord={currentWord} onWordClick={this.addToTrail}/>
+        </div>
+      );
+    }
+    else{
+      body = (
+        <div>
+          <WordTrail words={wordTrail} loading={!relatedWords.length} result={result} onWordClick={this.backToWord}/>
+          <ResultMessage result={result} usedWords={MAX_ATTEMPTS - attemptsLeft} onRetry={this.retry}/>
+        </div>
+      )
+    }
+
     return (
       <section>
         <Controls attempts={attemptsLeft} onShuffle={this.shuffle} onRetry={this.retry}/>
-        <WordTrail words={wordTrail} loading={!relatedWords.length} onWordClick={this.backToWord}/>
-        <RelatedWords words={relatedWords} currentWord={currentWord} onWordClick={this.addToTrail}/>
+        {body}
       </section>
     );
   }

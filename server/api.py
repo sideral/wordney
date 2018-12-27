@@ -42,7 +42,7 @@ def get_similar_words(word):
     result = [item[0] for item in similar]
     tagged = nltk.pos_tag(result)
     nouns = [tag[0] for tag in tagged if (tag[1] == "NN" or tag[1] == "NNS")]
-    common = ["things", "something", "everything", "nothing", "anything", "thing", "anyone"]
+    common = ["things", "something", "everything", "nothing", "anything", "thing", "anyone", "anybody", "nobody", "somebody", "everybody", "everyone", "knows"]
     less_common = [noun for noun in nouns if noun not in common]
     expr = re.compile('[0-9]+|@|\.')
     less_common = [word for word in less_common if not expr.search(word)]

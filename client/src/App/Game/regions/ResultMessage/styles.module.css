@@ -1,16 +1,20 @@
 
-.MagnificentMessage{
+.message{
   text-align: center;
   font-size: 4em;
+  margin-top: 50px;
+}
+
+.won-message{
+  composes: message;
   color: #033c37;
-  margin-top: 25px;
 }
 
-.MagnificentMessage-count{
+.lost-message{
+  composes: message;
+  color: red;
+}
+
+.message-count{
   font-size: 1.3em;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }

@@ -1,8 +1,9 @@
 import React from 'react';
+import styles from './styles.module.css';
 
-class MagnificentMessage extends React.Component{
-  render(){
-    const results = [
+function ResultMessage({result, usedWords, onRetry}) {
+  const messages ={
+    won: [
       'awesome',
       'beautiful',
       'breathtaking',
@@ -67,16 +68,21 @@ class MagnificentMessage extends React.Component{
       'grandiose',
       'bombastic',
       'ecstatic'
-    ];
+    ],
+    lost: [
+      'sad'
+    ]
+  } ;
 
-    const randomIndex = Math.floor(results.length * Math.random());
-    return (
-      <div>
-        <div className="MagnificentMessage">{results[randomIndex]}!!</div>
-        <div className="MagnificentMessage-count">you used {this.props.usedWords} words. can you do it in less?</div>
-      </div>
-    );
-  }
+  const randomIndex = Math.floor(messages[result].length * Math.random());
+  const randomMessage = messages[result][randomIndex];
+  return (
+    <div>
+      <div className={styles[result + '-message']}>{randomMessage}!!</div>
+      {result === 'won'
+        &&  <div className={styles['message-count']} onClick={onRetry}>you used {usedWords} words. can you do it in less?</div>}
+    </div>
+  );
 }
 
-export default MagnificentMessage;
+export default ResultMessage;
