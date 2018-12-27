@@ -1,5 +1,5 @@
 import React from 'react';
-import WordSquare from '../../WordSquare';
+import WordSquare from '../../../components/WordSquare';
 
 function WordChoice({ onClick, children }) {
   return (

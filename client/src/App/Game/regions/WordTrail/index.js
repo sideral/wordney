@@ -1,15 +1,19 @@
 import React from 'react';
-import WordStep from '../WordSquare/WordStep';
+import WordStep from '../../components/WordSquare/WordStep';
 import WordIncognitoStep from './WordIncognitoStep';
 
-class Breadcrumb extends React.Component {
+class WordTrail extends React.Component {
   static defaultProps = {
-    ready: false,
+    loading: true,
     words: []
   };
 
   render() {
-    const { words, ready, onWordClick } = this.props;
+    const { words, loading, onWordClick } = this.props;
+
+    if(words.length === 0){
+      return <WordIncognitoStep key='?' loading={loading}/>;
+    }
 
     const steps = words.slice(0, -1).map((word, idx) => {
       return (
@@ -19,7 +23,7 @@ class Breadcrumb extends React.Component {
       );
     });
 
-    steps.push(<WordIncognitoStep key='?' ready={ready}/>);
+    steps.push(<WordIncognitoStep key='?' loading={loading}/>);
 
     const last = words.slice(-1)[0];
     steps.push(
@@ -34,4 +38,4 @@ class Breadcrumb extends React.Component {
   }
 }
 
-export default Breadcrumb;
+export default WordTrail;
