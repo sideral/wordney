@@ -1,22 +1,20 @@
+import nltk
+import random
+import re
 from flask import Flask, request
 from flask_restful import Resource, Api
 from gensim.models import KeyedVectors
 from flask_cors import CORS
-import nltk
-import random
-import re
+from functools import lru_cache
 
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
-model = KeyedVectors.load(r"data/embeddings/vectors.300.kv")
-
-with open('data/nouns.txt', 'r') as file:
-    nouns = [noun.replace('\n', '') for noun in file.readlines()]
 
 
 class RandomWordPair(Resource):
     def get(self, degrees):
+        nouns = get_nouns()
         first_word = nouns[random.randint(0, len(nouns) - 1)]
         second_word = first_word
 
@@ -37,6 +35,7 @@ api.add_resource(SimilarWords, '/similar-words/<string:word>')
 
 
 def get_similar_words(word):
+    model = load_vectors()
     # Check if the word exists in vocabulary, return 404 if not
     similar = model.most_similar([word], topn=50)
     result = [item[0] for item in similar]
@@ -47,6 +46,17 @@ def get_similar_words(word):
     expr = re.compile('[0-9]+|@|\.')
     less_common = [word for word in less_common if not expr.search(word)]
     return less_common[0:25]
+
+
+@lru_cache(maxsize=None)
+def load_vectors():
+    return KeyedVectors.load(r"data/embeddings/vectors.300.kv")
+
+
+@lru_cache(maxsize=None)
+def get_nouns():
+    with open('data/nouns.txt', 'r') as file:
+        return [noun.replace('\n', '') for noun in file.readlines()]
 
 
 if __name__ == '__main__':

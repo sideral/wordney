@@ -12,7 +12,7 @@ export default class Game extends React.Component {
   static getInitialState() {
     return {
       attemptsLeft: MAX_ATTEMPTS,
-      degrees: 5,
+      degrees: 3,
       result: 'pending',
       wordTrail: [],
       currentWordIndex: null,
