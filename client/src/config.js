@@ -7,7 +7,7 @@ const config = {
     apiUrl: 'http://127.0.0.1:5000'
   },
   production: {
-    apiUrl: 'https://wordney.0kb.co'
+    apiUrl: 'https://api.wordney.0kb.co'
   }
 };
 
