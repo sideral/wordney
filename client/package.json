@@ -2,6 +2,7 @@
   "name": "wordney",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://wordney.0kb.co",
   "dependencies": {
     "immutability-helper": "^2.9.0",
     "react": "^16.4.1",
